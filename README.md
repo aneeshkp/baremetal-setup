@@ -9,7 +9,7 @@ FROM BMO
 
 #From meta3 dev env to create vm
 
-ansible-playbook -i inventory.ini setup-playbook.yml -e working-dir=~/metal_working_dir/
+ansible-playbook -i inventory.ini setup-playbook.yml -e working_dir=~/metal_working_dir/
 
 
 # in your laptop 
