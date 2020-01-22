@@ -18,3 +18,7 @@ sudo brctl addbr provisioning
 # Use ip command. ifconfig commands are deprecated now.
 sudo ip addr add dev provisioning 172.22.0.1/24
 sudo ip link set provisioning up
+
+
+
+kubectl scale --replicas=0 deployment metal3-baremetal-operator -n metal3
