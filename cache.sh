@@ -46,6 +46,14 @@ export RHCOS_PATH=$(curl -s -S https://raw.githubusercontent.com/openshift/insta
 export RHCOS_QEMU_SHA_UNCOMPRESSED=$(curl -s -S https://raw.githubusercontent.com/openshift/installer/$COMMIT_ID/data/data/rhcos.json  | jq -r '.images.qemu["uncompressed-sha256"]')
 export RHCOS_OPENSTACK_SHA_COMPRESSED=$(curl -s -S https://raw.githubusercontent.com/openshift/installer/$COMMIT_ID/data/data/rhcos.json  | jq -r '.images.openstack.sha256')
 
+#In DEV SCRIPTS change in config_$USER 
+printf "\nMACHINE_OS_IMAGE_NAME=$RHCOS_OPENSTACK_URI"
+printf "\nMACHINE_OS_IMAGE_SHA256=$RHCOS_OPENSTACK_URI"
+printf "\nMACHINE_OS_BOOTSTRAP_IMAGE_NAME=$RHCOS_QEMU_URI"
+printf "\nMACHINE_OS_BOOTSTRAP_IMAGE_UNCOMPRESSED_SHA256=$RHCOS_QEMU_SHA_UNCOMPRESSED"
+
+#http://${MIRROR_IP}/images/${MACHINE_OS_IMAGE_NAME}?sha256=${MACHINE_OS_IMAGE_SHA256}
+#bootstrapOSImage: http://${MIRROR_IP}/images/${MACHINE_OS_BOOTSTRAP_IMAGE_NAME}?sha256=${MACHINE_OS_BOOTSTRAP_IMAGE_UNCOMPRESSED_SHA256}
 
 printf "\n*****************\n"
 printf "RHCOS IMAGE (place this in config file  as \"bootstrapOSImage\"):\n http://172.22.0.1/$RHCOS_QEMU_URI?sha256=$RHCOS_QEMU_SHA_UNCOMPRESSED\n"
