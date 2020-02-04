@@ -5,7 +5,7 @@
 
 # Latest stable 4.x release as of check-in
 VERSION="4.4.0-0.nightly-2020-01-29-012724"
-IMAGE_CACHE_FOLDER=$HOME/image_caches/images
+IMAGE_CACHE_FOLDER="image_caches"
 if [[ -z "$VERSION" ]]; then
     echo "No version selected, trying \"latest\"..."
     VERSION=$(curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/release.txt | grep 'Name:' | awk -F: '{print $2}' | xargs)
@@ -57,7 +57,7 @@ array=($RHCOS_OPENSTACK_URI,$RHCOS_QEMU_URI)
 
 for IMAGE_FILE in "${array[@]}"
 do
-  mkdir -p "$IMAGE_CACHE_FOLDER/$i"
+  mkdir -p "$HOME/$IMAGE_CACHE_FOLDER/images$i"
   COMP_IMAGE_FILE=$(echo "$IMAGE_FILE" | sed 's/x86_64/x86_64compressed/')
   cd "$HOME/image_cache/images/$i"
   
@@ -68,5 +68,5 @@ do
 done
   USER=$(whoami)
   sudo podman rm -f image_cache >/dev/null
-  sudo podman run --name image_cache -p 172.22.0.1:80:80/tcp -v /home/"$USER"/image_cache:/usr/share/nginx/html:ro -d nginx
+  sudo podman run --name image_cache -p 172.22.0.1:80:80/tcp -v /home/"$USER"/"$IMAGE_CACHE_FOLDER":/usr/share/nginx/html:ro -d nginx
 
