@@ -33,8 +33,14 @@ PULL_SECRET=~/pull-secret.json
 EXTRACT_DIR=$(pwd)
 
 # Get the oc binary
-curl $RELEASE_IMAGE_SOURCE/$VERSION/openshift-client-linux-$VERSION.tar.gz | tar zxvf - oc
-sudo cp ./oc /usr/local/bin/oc
+if ! [ -f /usr/local/bin/oc ]; then
+  curl $RELEASE_IMAGE_SOURCE/$VERSION/openshift-client-linux-$VERSION.tar.gz | tar zxvf - oc
+  sudo cp ./oc /usr/local/bin/oc
+else
+printf "Skipping OC client download(file exists)"
+fi
+
+
 # Extract the baremetal installer
 oc adm release extract --registry-config "${PULL_SECRET}" --command=$CMD --to "${EXTRACT_DIR}" ${RELEASE_IMAGE}
 
@@ -48,7 +54,7 @@ export RHCOS_OPENSTACK_SHA_COMPRESSED=$(curl -s -S https://raw.githubusercontent
 
 #In DEV SCRIPTS change in config_$USER 
 printf "\nMACHINE_OS_IMAGE_NAME=$RHCOS_OPENSTACK_URI"
-printf "\nMACHINE_OS_IMAGE_SHA256=$RHCOS_OPENSTACK_SHA_COMPRESSED"
+printf "\nMACHINE_OS_IMAGE_SHA256=$RHCOS_OPENSTACK_URI"
 printf "\nMACHINE_OS_BOOTSTRAP_IMAGE_NAME=$RHCOS_QEMU_URI"
 printf "\nMACHINE_OS_BOOTSTRAP_IMAGE_UNCOMPRESSED_SHA256=$RHCOS_QEMU_SHA_UNCOMPRESSED"
 
@@ -77,4 +83,3 @@ done
   USER=$(whoami)
   sudo podman rm -f image_cache >/dev/null
   sudo podman run --name image_cache -p 172.22.0.1:80:80/tcp -v /home/"$USER"/"$IMAGE_CACHE_FOLDER":/usr/share/nginx/html:ro -d nginx
-
