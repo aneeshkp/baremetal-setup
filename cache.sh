@@ -82,4 +82,4 @@ do
 done
   USER=$(whoami)
   sudo podman rm -f image_cache >/dev/null
-  sudo podman run --name image_cache -p 172.22.0.1:80:80/tcp -v /home/"$USER"/"$IMAGE_CACHE_FOLDER":/usr/share/nginx/html:ro -d nginx
+  sudo podman run --name image_cache -p 172.22.0.1:8080:80/tcp -v /home/"$USER"/"$IMAGE_CACHE_FOLDER":/usr/share/nginx/html:ro -d nginx
