@@ -22,3 +22,11 @@ sudo ip link set provisioning up
 
 
 kubectl scale --replicas=0 deployment metal3-baremetal-operator -n metal3
+
+# Accessing console
+in your laptop /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 console-openshift-console.apps.aputtur.kni.lab.metal3.io oauth-openshift.apps.aputtur.kni.lab.metal3.io
+
+sudo ssh -L 443:console-openshift-console.apps.aputtur.kni.lab.metal3.io:443 root@10.19.111.12
+
+https://console-openshift-console.apps.aputtur.kni.lab.metal3.io
